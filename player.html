@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bindaas-Cric Live Player</title>
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+  <script src="https://content.jwplatform.com/libraries/SAHhwvZq.js"></script>
+  <style>
+    :root { color-scheme: dark; }
+    * { box-sizing: border-box; }
+    body { margin: 0; min-height: 100vh; background: #111; color: #fff; font-family: 'Segoe UI', sans-serif; }
+    header { padding: 18px 20px; text-align: center; background: #1b1b1b; border-bottom: 1px solid #333; }
+    h1 { margin: 0; font-size: clamp(1.1rem, 3vw, 1.6rem); color: #069994; }
+    main { width: min(100% - 24px, 1100px); margin: 28px auto; }
+    #player-container { width: 100%; aspect-ratio: 16 / 9; background: #000; border-radius: 10px; overflow: hidden; }
+    .back { display: inline-block; margin-top: 18px; color: #fff; background: #3498db; padding: 10px 16px; border-radius: 6px; text-decoration: none; }
+    .error { padding: 24px; text-align: center; color: #ffb4ab; }
+  </style>
+</head>
+<body>
+  <header><h1 id="channel-name">Bindaas-Cric Live</h1></header>
+  <main>
+    <div id="player-container"></div>
+    <div id="message" class="error" hidden>Unable to load this stream.</div>
+    <a class="back" href="index.html">Back to channels</a>
+  </main>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const stream = params.get('stream');
+    const name = params.get('name') || 'Bindaas-Cric Live';
+    document.title = name + ' | Bindaas-Cric';
+    document.getElementById('channel-name').textContent = name;
+    if (stream && typeof jwplayer === 'function') {
+      jwplayer('player-container').setup({
+        file: stream,
+        width: '100%',
+        height: '100%',
+        type: 'hls',
+        autostart: false,
+        mute: false,
+        primary: 'html5'
+      });
+    } else {
+      document.getElementById('player-container').hidden = true;
+      document.getElementById('message').hidden = false;
+    }
+  </script>
+</body>
+</html>
